@@ -1,6 +1,13 @@
 import streamlit as st
 
+
 from src.pipelines.predict_pipeline import CustomData, PredictPipelines
+
+import sklearn
+import sys
+
+st.write("Python:", sys.version)
+st.write("Scikit-learn:", sklearn.__version__)
 
 
 st.title("Student Exam Performance Indicator")

@@ -1,11 +1,8 @@
 pandas
 numpy
-seaborn
-matplotlib
 scikit-learn==1.3.2
 xgboost
 catboost
 dill==0.4.0
-flask
 streamlit
 # -e .
