@@ -1,16 +1,4 @@
-import sys
-import sklearn
 import streamlit as st
-from sklearn.pipeline import Pipeline
-
-st.write("Python:", sys.version)
-st.write("Scikit-learn:", sklearn.__version__)
-st.write(
-    "Pipeline has transform_input:",
-    hasattr(Pipeline, "transform_input")
-)
-
-st.stop()
 
 from src.pipelines.predict_pipeline import CustomData, PredictPipelines
 
