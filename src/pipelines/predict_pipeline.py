@@ -13,21 +13,21 @@ class PredictPipelines :
             model_path = "artifacts/model.pkl"
             preprocessor_path = "artifacts/preprocessor.pkl"
 
+            print("1. Loading model...")
             model = load_object(file_path=model_path)
+            print("2. Model loaded:", type(model))
+
+            print("3. Loading preprocessor...")
             preprocessor = load_object(file_path=preprocessor_path)
+            print("4. Preprocessor loaded:", type(preprocessor))
 
-            print("MODEL:", model)
-            print("PREPROCESSOR:", preprocessor)
-
-            if model is None:
-                raise Exception("Model loaded as None")
-
-            if preprocessor is None:
-                raise Exception("Preprocessor loaded as None")
-
+            print("5. Transforming...")
             data_scaled = preprocessor.transform(features)
+            print("6. Transform successful")
 
+            print("7. Predicting...")
             preds = model.predict(data_scaled)
+            print("8. Prediction successful")
 
             return preds
 
