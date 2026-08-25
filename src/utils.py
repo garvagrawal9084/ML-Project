@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import pandas as pd
 import dill
+from matplotlib.dates import drange
 from scipy.special.cython_special import cbrt
 from sklearn.metrics import r2_score
 
@@ -24,15 +25,25 @@ def save_object(file_path , obj) :
         raise CustomException(e , sys)
 
 
-def evaluate_models(x_train , y_train  , x_test , y_test , models:dict , params : dict) :
+def evaluate_models(x_train, y_train, x_test, y_test, models: dict, params: dict):
     try:
         report = {}
+        trained_models = {}
 
         for i in range(len(models)):
+            model_name = list(models.keys())[i]
             model = list(models.values())[i]
-            para = params[list(models.keys())[i]]
+            para = params[model_name]
 
-            rs = RandomizedSearchCV(model , para , cv=5 , n_jobs=-1 , verbose=3 , refit=True)
+            rs = RandomizedSearchCV(
+                model,
+                para,
+                cv=5,
+                n_jobs=-1,
+                verbose=3,
+                refit=True
+            )
+
             rs.fit(x_train, y_train)
 
             best_model = rs.best_estimator_
@@ -40,11 +51,22 @@ def evaluate_models(x_train , y_train  , x_test , y_test , models:dict , params 
             y_train_pred = best_model.predict(x_train)
             y_test_pred = best_model.predict(x_test)
 
-            train_model_score = r2_score(y_train , y_train_pred)
-            test_model_score = r2_score(y_test , y_test_pred)
+            train_model_score = r2_score(y_train, y_train_pred)
+            test_model_score = r2_score(y_test, y_test_pred)
 
-            report[list(models.keys())[i]] = test_model_score
+            report[model_name] = test_model_score
 
-        return report
+            # Store the fitted model
+            trained_models[model_name] = best_model
+
+        return report, trained_models
+
     except Exception as e:
-        raise CustomException(e , sys)
+        raise CustomException(e, sys)
+
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return dill.load(file_obj)
+    except Exception as e:
+        CustomException(e , sys)

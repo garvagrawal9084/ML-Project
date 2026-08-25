@@ -127,22 +127,34 @@ class ModelTrainer :
                 }
             }
 
-            model_report : dict = evaluate_models(x_train = X_train , y_train = y_train
-                                            , x_test= X_test , y_test = y_test , models = models , params = params)
+            model_report, trained_models = evaluate_models(
+                x_train=X_train,
+                y_train=y_train,
+                x_test=X_test,
+                y_test=y_test,
+                models=models,
+                params=params
+            )
 
-            best_model_score = max(sorted(model_report.values()))
+            best_model_score = max(model_report.values())
 
-            best_model_name = max(model_report , key=model_report.get)
+            best_model_name = max(model_report, key=model_report.get)
 
-            best_model = models[best_model_name]
+            best_model = trained_models[best_model_name]
 
-            if best_model_score < 0.6 :
+            if best_model_score < 0.6:
                 raise CustomException("No best model found")
 
-            logging.info(f"Best model found on both training and testing dataset {best_model_name} {best_model_score}")
+            # Fit the selected model before saving
+            best_model.fit(X_train, y_train)
+
+            logging.info(
+                f"Best model found on both training and testing dataset "
+                f"{best_model_name} {best_model_score}"
+            )
 
             save_object(
-                file_path=self.model_trainer_config.trained_model_file_path ,
+                file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
 
