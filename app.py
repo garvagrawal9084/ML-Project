@@ -1,14 +1,16 @@
-import streamlit as st
-
-
-from src.pipelines.predict_pipeline import CustomData, PredictPipelines
-
-import sklearn
 import sys
+import streamlit as st
+import sklearn
+from sklearn.pipeline import Pipeline
 
 st.write("Python:", sys.version)
 st.write("Scikit-learn:", sklearn.__version__)
+st.write(
+    "Pipeline transform_input:",
+    hasattr(Pipeline, "transform_input")
+)
 
+from src.pipelines.predict_pipeline import CustomData, PredictPipelines
 
 st.title("Student Exam Performance Indicator")
 
