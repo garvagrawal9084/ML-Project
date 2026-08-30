@@ -100,7 +100,7 @@ jobs:
         run: |
           docker run -d \
             --name mltest \
-            -p 8080:8080 \
+            -p 8501:8501 \
             $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Cleanup
