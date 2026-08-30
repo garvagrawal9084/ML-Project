@@ -7,6 +7,7 @@ st.title("Student Exam Performance Indicator")
 st.header("Student Exam Performance Prediction")
 
 
+
 gender = st.selectbox(
     "Gender",
     ["male", "female"]
